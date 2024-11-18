@@ -43,8 +43,8 @@ This repository contains the practical code examples from the book "Prompt Engin
 
 1. Clone the repository:
    ```sh
-   git clone <repository_url>
-   cd <repository_name>
+   git clone https://github.com/richardleighdavies/prompt-engineering-in-practice.git
+   cd prompt-engineering-in-practice
    ```
 
 2. Navigate to the desired example directory and set up your `.env` file:
@@ -71,11 +71,7 @@ make
 
 ## License
 
-This project is licensed under the MIT License - see the 
-
-LICENSE
-
- file for details.
+This project is licensed under the MIT License - see the `LICENSE` file for details.
 
 ## Author
 
