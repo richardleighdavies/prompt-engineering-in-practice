@@ -7,7 +7,7 @@
 
 run: 
 	reset
-	. .venv/bin/activate && python3 __main__.py
+	. .venv/bin/activate && python3 main.py
 
 install: 
 	reset
