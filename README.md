@@ -16,10 +16,9 @@ This repository contains the practical code examples from the book "Prompt Engin
 
 ```
 .
-├── chapter_07/
-│   ├── section_01_text_generation/
-│   ├── section_02_prompt_chaining/
-│   └── section_03_prompt_routing/
+├── chapter_07_text_generation/
+├── chapter_08_prompt_chaining/
+├── chapter_09_prompt_routing/
 ├── LICENSE
 ├── pyproject.toml
 └── README.md
@@ -49,25 +48,27 @@ This repository contains the practical code examples from the book "Prompt Engin
 
 2. Navigate to the desired example directory and set up your `.env` file:
    ```sh
-   cd chapter_07/section_01_text_generation/practical_example_01
+   cd chapter_07_text_generation/practical_example_01
    echo "OPENAI_API_KEY=your_api_key_here" > .env
    ```
 
-3. Run the installation command to create a virtual environment and install dependencies:
+3. Create a virtual environment and install dependencies:
    ```sh
-   make install
+   python3 -m venv .venv
+   source .venv/bin/activate
+   pip install --upgrade pip
+   pip install -r requirements.txt
    ```
 
 ## Usage
 
 Execute the example:
 ```sh
-make
+python3 main.py
 ```
 
 ### Notes
 - **Self-Contained Examples:** Each section is an independent project. Repeat the steps above for each example you wish to run.
-- **Environment Isolation:** `make install` ensures each example has its own isolated environment.
 
 ## License
 
