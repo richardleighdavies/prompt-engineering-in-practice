@@ -1,6 +1,0 @@
-langchain ~= 0.3.4
-langchain-community ~= 0.3.3
-langchain-core ~= 0.3.13
-langchain-openai ~= 0.2.3
-pydantic ~= 2.9.2
-python-dotenv ~= 1.0.1
