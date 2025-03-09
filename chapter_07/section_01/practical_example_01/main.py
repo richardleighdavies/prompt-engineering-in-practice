@@ -80,10 +80,10 @@ def main():
     )
 
     # Display the agent's response to the user
-    print(f"\nAgent Message: {agent_message}", end="\n\n")
+    print(f"\nAgent Message: {agent_message['content']}", end="\n\n")
 
     # Add agent's response to conversation history
-    messages.append({"role": "assistant", "content": agent_message})
+    messages.append(agent_message)
 
     # ----- Second Turn -----
 
@@ -100,7 +100,7 @@ def main():
     )
 
     # Display the agent's second response
-    print(f"\nAgent Message: {agent_message}", end="\n\n")
+    print(f"\nAgent Message: {agent_message['content']}", end="\n\n")
 
 
 if __name__ == "__main__":

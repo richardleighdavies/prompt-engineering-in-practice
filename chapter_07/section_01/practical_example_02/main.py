@@ -74,7 +74,7 @@ def main():
     messages: list[dict[str, str]] = []
 
     # Define the path to our markdown input file
-    markdown_file_path = relative_path / "data/input_02.md"
+    markdown_file_path = relative_path / "data/input_01.md"
 
     # Load the content of the markdown file
     markdown_file_content = load_file(markdown_file_path)
@@ -94,11 +94,11 @@ def main():
         messages=messages,
         system_prompt_template_path_01=relative_path / "prompt_templates/system_prompt_template_01.md",
         system_prompt_template_path_02=relative_path / "prompt_templates/system_prompt_template_02.md",
-        output_schema=schemas.StructuredOutputSchema,
+        output_schema=schemas.OutputSchema,
     )
 
     # Display the structured response as formatted JSON
-    print(f"Agent:\n\n{json.dumps(agent_message, indent=4)}", end="\n\n")
+    print(f"Agent:\n\n{json.dumps(agent_message['content'], indent=4)}", end="\n\n")
 
 
 if __name__ == "__main__":

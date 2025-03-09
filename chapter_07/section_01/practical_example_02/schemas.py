@@ -1,28 +1,20 @@
 """ """
 
-# Standard Library
-from enum import Enum
+# Standard Library 
+from enum import Enum 
+ 
+# Third Party 
+from pydantic import BaseModel, Field 
+  
 
-# Third Party
-from pydantic import BaseModel, Field
+class PerformanceLevel(str, Enum): 
+    excellent = "Excellent" 
+    satisfactory = "Satisfactory"  
+    needs_improvement = "Needs Improvement" 
+ 
 
-
-class PerformanceCategory(str, Enum):
-    excellent = "Excellent"
-    good = "Good"
-    fair = "Fair"
-    poor = "Poor"
-
-
-class Criterion(BaseModel):
-    feedback: str = Field(description="Descriptive feedback or reasoning for the grade.")
-    category: PerformanceCategory = Field(description="Performance classification: Excellent, Good, Fair, or Poor.")
-    score: float = Field(description="Numerical score for the criterion, ranging from 0.0 to 100.0.")
-    meets_standard: bool = Field(description="Boolean indicating if the criterion meets the expected standard.")
-
-
-class StructuredOutputSchema(BaseModel):
-    content: Criterion = Field(description="Evaluation details for Content.")
-    clarity: Criterion = Field(description="Evaluation details for Clarity.")
-    research: Criterion = Field(description="Evaluation details for Research.")
-    presentation: Criterion = Field(description="Evaluation details for Presentation.")
+class OutputSchema(BaseModel): 
+    score: int = Field(description="Numerical assessment score from 0-100") 
+    performance: PerformanceLevel = Field(description="Overall performance classification") 
+    feedback: str = Field(description="Detailed evaluative feedback on the assessment") 
+    passed: bool = Field(description="Whether the assessment meets passing requirements") 

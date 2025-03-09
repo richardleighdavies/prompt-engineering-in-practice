@@ -26,7 +26,7 @@ class LanguageModelService:
 
         response: dict[str, str] = self.language_model.invoke(language_model_input)
 
-        return {"role": "agent", "content": response.content}
+        return {"role": "assistant", "content": response.content}
 
     def generate_structured_text(
         self,
@@ -45,7 +45,7 @@ class LanguageModelService:
 
         structured_response: dict[str, str] = response.model_dump()
 
-        return {"role": "agent", "content": structured_response}
+        return {"role": "assistant", "content": structured_response}
 
     def _get_system_prompt(
         self,

@@ -17,8 +17,6 @@ from langchain_openai import ChatOpenAI  # LangChain's wrapper for OpenAI's chat
 from pydantic_settings import BaseSettings, SettingsConfigDict  # For type-safe configuration
 
 # Local
-import schemas  # Pydantic models for structured output
-
 from services.language_model.service import LanguageModelService  # Our abstraction for LLM interactions
 
 # Get the directory where this script is located to find relative paths
@@ -32,7 +30,7 @@ class Config(BaseSettings):
 
     OPENAI_API_KEY: str  # Required API key for OpenAI
     OPENAI_MODEL_NAME: str = "gpt-4o-mini"  # Model name with default value
-    OPENAI_TEMPERATURE: float = 0.0  # Temperature set to 0 for deterministic outputs
+    OPENAI_TEMPERATURE: float = 0.7  # Temperature set to 0.7 for deterministic outputs
 
 
 async def load_file(file_path: Path) -> str:
@@ -51,12 +49,10 @@ async def main():
     """
 
     # ----- Document Loading -----
-    document_text = await load_file(relative_path / "data/input_01.md")
+    document_content = await load_file(relative_path / "data/input_01.md")
 
-    print("Document Text:", end="\n\n")
-    print("-" * 40, end="\n\n")
-    print(document_text, end="\n\n")
-    print("-" * 40, end="\n\n")
+    print("# Document Content", end="\n\n")
+    print(document_content, end="\n\n")
 
     # ----- Setup -----
     config = Config()
@@ -73,7 +69,7 @@ async def main():
 
     # ----- Initial Message Preparation -----
     messages = []
-    user_message = {"role": "user", "content": document_text}
+    user_message = {"role": "user", "content": document_content}
     messages.append(user_message)
 
     # ----- Parallel Analysis Tasks -----
@@ -81,51 +77,57 @@ async def main():
 
     # Create three concurrent tasks for different aspects of document analysis
     methodology_task = asyncio.create_task(
-        language_model_service.generate_structured_text(
+        language_model_service.generate_unstructured_text(
             messages=messages,
             system_prompt_template_path=relative_path / "prompt_templates/methodology_analysis_system_prompt_template.md",
-            output_schema=schemas.MethodologyAnalysis,
         )
     )
 
     results_task = asyncio.create_task(
-        language_model_service.generate_structured_text(
+        language_model_service.generate_unstructured_text(
             messages=messages,
             system_prompt_template_path=relative_path / "prompt_templates/results_analysis_system_prompt_template.md",
-            output_schema=schemas.ResultsAnalysis,
         )
     )
 
     implications_task = asyncio.create_task(
-        language_model_service.generate_structured_text(
+        language_model_service.generate_unstructured_text(
             messages=messages,
             system_prompt_template_path=relative_path / "prompt_templates/implications_analysis_system_prompt_template.md",
-            output_schema=schemas.ImplicationsAnalysis,
         )
     )
 
     print("Waiting for analysis tasks to complete...", end="\n\n")
 
     # Wait for all analysis tasks to complete concurrently
-    methodology_result, results_result, implications_result = await asyncio.gather(
+    methodology_output, results_output, implications_output = await asyncio.gather(
         methodology_task, results_task, implications_task
     )
 
     print("Analysis tasks completed.", end="\n\n")
+
+    print("# Methodology Output", end="\n\n")
+    print(f"{methodology_output['content']}")
+
+    print("# Results Output", end="\n\n")
+    print(f"{results_output['content']}")
+
+    print("# Implications Output", end="\n\n")
+    print(f"{implications_output['content']}")
 
     # ----- Synthesis of Analysis Results -----
     # Load the template for the synthesis prompt
     user_prompt_template_path = relative_path / "prompt_templates/synthesis_user_prompt_template.md"
     user_prompt_template = HumanMessagePromptTemplate.from_template_file(
         template_file=user_prompt_template_path,
-        input_variables=["methodology_result", "results_result", "implications_result"],
+        input_variables=["methodology_output", "results_output", "implications_output"],
     )
 
     # Format the template with the results from our analysis tasks
     user_prompt = user_prompt_template.format(
-        methodology_result=methodology_result["content"],
-        results_result=results_result["content"],
-        implications_result=implications_result["content"],
+        methodology_output=methodology_output["content"],
+        results_output=results_output["content"],
+        implications_output=implications_output["content"],
     )
 
     # Prepare messages for the synthesis request
@@ -135,30 +137,14 @@ async def main():
     messages.append(user_message)
 
     # Generate the final synthesis of all analyses
-    agent_response = await language_model_service.generate_structured_text(
+    synthesis_response = await language_model_service.generate_unstructured_text(
         messages=messages,
         system_prompt_template_path=relative_path / "prompt_templates/synthesis_system_prompt_template.md",
-        output_schema=schemas.SynthesisAnalysis,
     )
 
     # ----- Output Results -----
-    print("Analysis Results", end="\n\n")
-    print("-" * 40, end="\n\n")
-
-    print("Methodology Summary:", end="\n\n")
-    print(f"{agent_response['content']['methodology_summary']}")
-
-    print("Results Summary:", end="\n\n")
-    print(f"{agent_response['content']['results_summary']}")
-
-    print("Implications Summary:", end="\n\n")
-    print(f"{agent_response['content']['implications_summary']}")
-
-    print("Overall Assessment:", end="\n\n")
-    print(f"{agent_response['content']['overall_assessment']}")
-
-    print("Overall Rating:", end="\n\n")
-    print(f"{agent_response['content']['overall_rating']}/10")
+    print("# Synthesis Output", end="\n\n")
+    print(f"{synthesis_response['content']}")
 
 
 if __name__ == "__main__":
