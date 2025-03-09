@@ -1,10 +1,17 @@
-Please synthesize the following three analyses into a unified document assessment:
+# Methodology Analysis
 
-METHODOLOGY ANALYSIS:
-{{methodology_result}}
+```markdown
+{methodology_output}
+```
 
-RESULTS ANALYSIS:
-{{results_result}}
+# Results Analysis
 
-IMPLICATIONS ANALYSIS:
-{{implications_result}}
+```markdown
+{results_output}
+```
+
+# Implications Analysis
+
+```markdown
+{implications_output}
+```
