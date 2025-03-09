@@ -11,6 +11,8 @@ final assessment.
 
 # Standard Library
 import asyncio  # For asynchronous programming
+import json
+
 from pathlib import Path  # For cross-platform file path handling
 
 # Third Party
@@ -65,7 +67,7 @@ async def main():
     review_text = await load_file(relative_path / "data/input_01.md")
 
     # Display the review text for reference
-    print("Product Review:", end="\n\n")
+    print("# Product Review", end="\n\n")
     print("-" * 40, end="\n\n")
     print(review_text, end="\n\n")
     print("-" * 40, end="\n\n")
@@ -97,33 +99,30 @@ async def main():
 
     # Create three concurrent tasks for different aspects of product review analysis
     feature_task = asyncio.create_task(
-        language_model_service.generate_structured_text(
+        language_model_service.generate_unstructured_text(
             messages=messages,
             system_prompt_template_path=relative_path / "prompt_templates/feature_analysis_system_prompt_template.md",
-            output_schema=schemas.FeatureAnalysis,
         )
     )
 
     sentiment_task = asyncio.create_task(
-        language_model_service.generate_structured_text(
+        language_model_service.generate_unstructured_text(
             messages=messages,
             system_prompt_template_path=relative_path / "prompt_templates/sentiment_analysis_system_prompt_template.md",
-            output_schema=schemas.SentimentAnalysis,
         )
     )
 
     market_task = asyncio.create_task(
-        language_model_service.generate_structured_text(
+        language_model_service.generate_unstructured_text(
             messages=messages,
             system_prompt_template_path=relative_path / "prompt_templates/market_comparison_system_prompt_template.md",
-            output_schema=schemas.MarketComparisonAnalysis,
         )
     )
 
     print("Waiting for analysis tasks to complete...", end="\n\n")
 
     # Wait for all analysis tasks to complete concurrently
-    feature_result, sentiment_result, market_result = await asyncio.gather(feature_task, sentiment_task, market_task)
+    feature_output, sentiment_output, market_output = await asyncio.gather(feature_task, sentiment_task, market_task)
 
     print("Analysis tasks completed.", end="\n\n")
 
@@ -137,56 +136,40 @@ async def main():
     # Format the template with the results from our analysis tasks
     user_prompt = user_prompt_template.format(
         review_text=review_text,
-        feature_result=feature_result["content"],
-        sentiment_result=sentiment_result["content"],
-        market_result=market_result["content"],
+        feature_result=feature_output["content"],
+        sentiment_result=sentiment_output["content"],
+        market_result=market_output["content"],
     )
 
     # Prepare messages for the synthesis request
-    synthesis_messages = []
-    synthesis_user_message = {"role": "user", "content": user_prompt.content}
-    synthesis_messages.append(synthesis_user_message)  # Add to conversation history
+    messages = []
+
+    user_message = {"role": "user", "content": user_prompt.content}
+    messages.append(user_message)  # Add to conversation history
 
     # Generate the final synthesis of all analyses
-    final_result = await language_model_service.generate_structured_text(
-        messages=synthesis_messages,
+    final_output = await language_model_service.generate_structured_text(
+        messages=messages,
         system_prompt_template_path=relative_path / "prompt_templates/synthesis_system_prompt_template.md",
-        output_schema=schemas.StructuredOutputSchema,
+        output_schema=schemas.OutputSchema,
     )
 
     # ----- Output Results -----
     # Display the comprehensive analysis results in a structured format
+    print("-" * 40, end="\n\n")
     print("Product Review Analysis Results", end="\n\n")
     print("-" * 40, end="\n\n")
 
-    print(f"Product: {final_result['content']['product_name']}", end="\n\n")
-    print(f"Summary: {final_result['content']['summary']}", end="\n\n")
-
-    print("Feature Analysis:", end="\n\n")
-    print(f"{final_result['content']['key_features_summary']}", end="\n\n")
-    print(f"{final_result['content']['technical_assessment']}", end="\n\n")
-
-    print("Sentiment Analysis:", end="\n\n")
-    print(f"{final_result['content']['customer_sentiment']}", end="\n\n")
-
-    print("Pros and Cons:", end="\n\n")
-    print("Pros:")
-    for pro in final_result["content"]["pros_and_cons"]["pros"]:
-        print(f"- {pro}")
-    print("\nCons:")
-    for con in final_result["content"]["pros_and_cons"]["cons"]:
-        print(f"- {con}")
-    print("\n")
-
-    print("Market Position:", end="\n\n")
-    print(f"{final_result['content']['market_position_summary']}", end="\n\n")
-    print(f"{final_result['content']['competitive_landscape']}", end="\n\n")
-
-    print("Final Assessment:", end="\n\n")
-    print(f"Recommendation: {final_result['content']['recommendation']}", end="\n\n")
-    print(f"Target Audience: {final_result['content']['target_audience']}", end="\n\n")
-    print(f"Overall Rating: {final_result['content']['overall_rating']}/10", end="\n\n")
-    print(f"Rating Category: {final_result['content']['rating_category'].value}", end="\n\n")
+    print(f"# Product Name\n\n{final_output['content']['product_name']}", end="\n\n")
+    print(f"# Summary\n\n{final_output['content']['summary']}", end="\n\n")
+    
+    print(f"# Key Points\n\n{json.dumps(final_output['content']['key_points'], indent=4)}", end="\n\n")
+    print(f"# Market Analysis\n\n{json.dumps(final_output['content']['key_points'], indent=4)}", end="\n\n")
+    
+    # Conclusions
+    print(f"# Recommendation\n\n{final_output['content']['recommendation']}", end="\n\n")
+    print(f"# Overall Rating\n\n{final_output['content']['overall_rating']}", end="\n\n")
+    print(f"# Rating Category\n\n{final_output['content']['rating_category']}", end="\n\n")
 
 
 if __name__ == "__main__":

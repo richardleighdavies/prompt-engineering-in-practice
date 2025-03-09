@@ -27,7 +27,7 @@ class LanguageModelService:
 
         response: dict[str, str] = await self.language_model.ainvoke(language_model_input)
 
-        return {"role": "agent", "content": response.content}
+        return {"role": "assistant", "content": response.content}
 
     async def generate_structured_text(
         self,
@@ -46,7 +46,7 @@ class LanguageModelService:
 
         structured_response: dict[str, str] = response.model_dump()
 
-        return {"role": "agent", "content": structured_response}
+        return {"role": "assistant", "content": structured_response}
 
     async def generate_structured_text_two_steps(
         self,
