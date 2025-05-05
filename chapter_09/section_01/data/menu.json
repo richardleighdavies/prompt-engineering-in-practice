@@ -198,5 +198,505 @@
     "id": 40,
     "name": "Caesar Salad",
     "description": "Romaine lettuce, croutons, Parmesan cheese and Caesar dressing."
+  },
+  {
+    "id": 41,
+    "name": "Doppio",
+    "description": "Double shot of espresso, intense flavor."
+  },
+  {
+    "id": 42,
+    "name": "Café au Lait",
+    "description": "Equal parts brewed coffee and steamed milk."
+  },
+  {
+    "id": 43,
+    "name": "Vienna Coffee",
+    "description": "Espresso topped with whipped cream."
+  },
+  {
+    "id": 44,
+    "name": "Espresso con Panna",
+    "description": "Espresso shot topped with whipped cream."
+  },
+  {
+    "id": 45,
+    "name": "Café Bombón",
+    "description": "Espresso sweetened with condensed milk."
+  },
+  {
+    "id": 46,
+    "name": "Turkish Coffee",
+    "description": "Finely ground coffee simmered and served unfiltered."
+  },
+  {
+    "id": 47,
+    "name": "Greek Coffee",
+    "description": "Strong coffee brewed with sugar, served in a small cup."
+  },
+  {
+    "id": 48,
+    "name": "Mexican Coffee",
+    "description": "Espresso with cinnamon and piloncillo."
+  },
+  {
+    "id": 49,
+    "name": "Café Marocchino",
+    "description": "Espresso with cocoa powder and milk foam."
+  },
+  {
+    "id": 50,
+    "name": "Nitro Latte",
+    "description": "Latte infused with nitrogen for a creamy texture."
+  },
+  {
+    "id": 51,
+    "name": "Cold Brew Lemonade",
+    "description": "Cold brew coffee mixed with fresh lemonade."
+  },
+  {
+    "id": 52,
+    "name": "Iced Matcha Latte",
+    "description": "Chilled matcha green tea with milk and ice."
+  },
+  {
+    "id": 53,
+    "name": "Iced Chai Latte",
+    "description": "Spiced chai tea steeped and served over ice with milk."
+  },
+  {
+    "id": 54,
+    "name": "Peach Iced Tea",
+    "description": "Black tea infused with peach syrup and ice."
+  },
+  {
+    "id": 55,
+    "name": "Mango Iced Tea",
+    "description": "Green tea with mango puree and ice."
+  },
+  {
+    "id": 56,
+    "name": "Passion Fruit Juice",
+    "description": "Fresh passion fruit juice, sweet and tangy."
+  },
+  {
+    "id": 57,
+    "name": "Pineapple Juice",
+    "description": "Freshly squeezed pineapple juice."
+  },
+  {
+    "id": 58,
+    "name": "Watermelon Juice",
+    "description": "Refreshing watermelon juice."
+  },
+  {
+    "id": 59,
+    "name": "Carrot Juice",
+    "description": "Fresh carrot juice, rich in vitamins."
+  },
+  {
+    "id": 60,
+    "name": "Beetroot Juice",
+    "description": "Earthy beet juice with a touch of ginger."
+  },
+  {
+    "id": 61,
+    "name": "Celery Juice",
+    "description": "Refreshing celery juice, hydrating and green."
+  },
+  {
+    "id": 62,
+    "name": "Mango Lassi",
+    "description": "Yogurt-based mango drink with cardamom."
+  },
+  {
+    "id": 63,
+    "name": "Berry Blast Smoothie",
+    "description": "Blend of mixed berries with yogurt and honey."
+  },
+  {
+    "id": 64,
+    "name": "Tropical Smoothie",
+    "description": "Mango, pineapple, banana and coconut milk blend."
+  },
+  {
+    "id": 65,
+    "name": "Protein Smoothie",
+    "description": "Whey protein with banana and almond milk."
+  },
+  {
+    "id": 66,
+    "name": "Peanut Butter Banana Smoothie",
+    "description": "Banana, peanut butter and milk blend."
+  },
+  {
+    "id": 67,
+    "name": "Acai Bowl",
+    "description": "Frozen acai puree topped with granola and fruits."
+  },
+  {
+    "id": 68,
+    "name": "Smoothie Bowl",
+    "description": "Thick smoothie served in a bowl with toppings."
+  },
+  {
+    "id": 69,
+    "name": "Dragon Fruit Bowl",
+    "description": "Dragon fruit puree with fresh fruit and seeds."
+  },
+  {
+    "id": 70,
+    "name": "Chia Pudding",
+    "description": "Chia seeds soaked in almond milk and vanilla."
+  },
+  {
+    "id": 71,
+    "name": "Overnight Oats",
+    "description": "Oats soaked overnight in milk with fruits."
+  },
+  {
+    "id": 72,
+    "name": "Yogurt Parfait",
+    "description": "Layers of yogurt, granola, and fresh berries."
+  },
+  {
+    "id": 73,
+    "name": "Granola Bowl",
+    "description": "Granola served with milk or yogurt and fruits."
+  },
+  {
+    "id": 74,
+    "name": "Pancakes",
+    "description": "Fluffy pancakes served with syrup and butter."
+  },
+  {
+    "id": 75,
+    "name": "Waffles",
+    "description": "Crispy waffles with maple syrup and whipped cream."
+  },
+  {
+    "id": 76,
+    "name": "French Toast",
+    "description": "Bread soaked in egg mixture, grilled and served with syrup."
+  },
+  {
+    "id": 77,
+    "name": "Bagel with Cream Cheese",
+    "description": "Toasted bagel with plain cream cheese."
+  },
+  {
+    "id": 78,
+    "name": "Ham and Cheese Croissant",
+    "description": "Buttery croissant filled with ham and cheese."
+  },
+  {
+    "id": 79,
+    "name": "Danish Pastry",
+    "description": "Sweet pastry with fruit or cream cheese filling."
+  },
+  {
+    "id": 80,
+    "name": "Pain au Chocolat",
+    "description": "Flaky pastry with chocolate filling."
+  },
+  {
+    "id": 81,
+    "name": "Cinnamon Roll",
+    "description": "Sweet roll topped with cinnamon and icing."
+  },
+  {
+    "id": 82,
+    "name": "Blueberry Muffin",
+    "description": "Moist muffin bursting with blueberries."
+  },
+  {
+    "id": 83,
+    "name": "Eclair",
+    "description": "Choux pastry filled with cream and chocolate glaze."
+  },
+  {
+    "id": 84,
+    "name": "Macaron Assortment",
+    "description": "Colorful sandwich cookies with various fillings."
+  },
+  {
+    "id": 85,
+    "name": "Lemon Tart",
+    "description": "Buttery crust with tangy lemon curd."
+  },
+  {
+    "id": 86,
+    "name": "Chocolate Lava Cake",
+    "description": "Warm chocolate cake with molten center."
+  },
+  {
+    "id": 87,
+    "name": "Cheesecake Slice",
+    "description": "Creamy cheesecake on a graham cracker crust."
+  },
+  {
+    "id": 88,
+    "name": "Tiramisu Cup",
+    "description": "Layered mascarpone, espresso-soaked ladyfingers and cocoa."
+  },
+  {
+    "id": 89,
+    "name": "Panna Cotta",
+    "description": "Creamy set dessert with berry coulis."
+  },
+  {
+    "id": 90,
+    "name": "Crème Brûlée",
+    "description": "Rich custard topped with caramelized sugar."
+  },
+  {
+    "id": 91,
+    "name": "Gelato Scoop",
+    "description": "Italian-style ice cream, choice of flavor."
+  },
+  {
+    "id": 92,
+    "name": "Sorbet Scoop",
+    "description": "Fruit-based icy dessert, dairy-free."
+  },
+  {
+    "id": 93,
+    "name": "Ice Cream Sundae",
+    "description": "Ice cream with toppings, syrup and whipped cream."
+  },
+  {
+    "id": 94,
+    "name": "Fruit Salad",
+    "description": "Mixed seasonal fruits fresh and colorful."
+  },
+  {
+    "id": 95,
+    "name": "Cheese Plate",
+    "description": "Selection of cheeses with crackers and fruit."
+  },
+  {
+    "id": 96,
+    "name": "Charcuterie Board",
+    "description": "Assorted cured meats, cheeses and accompaniments."
+  },
+  {
+    "id": 97,
+    "name": "Pretzel",
+    "description": "Soft pretzel with a sprinkle of coarse salt."
+  },
+  {
+    "id": 98,
+    "name": "Popcorn",
+    "description": "Freshly popped popcorn, lightly salted."
+  },
+  {
+    "id": 99,
+    "name": "Nachos",
+    "description": "Tortilla chips with cheese, jalapeños and salsa."
+  },
+  {
+    "id": 100,
+    "name": "Hummus and Pita",
+    "description": "Creamy hummus served with warm pita bread."
+  },
+  {
+    "id": 101,
+    "name": "Guacamole and Chips",
+    "description": "Fresh guacamole with crispy tortilla chips."
+  },
+  {
+    "id": 102,
+    "name": "Bruschetta",
+    "description": "Grilled bread topped with tomato, basil and olive oil."
+  },
+  {
+    "id": 103,
+    "name": "Caprese Salad",
+    "description": "Tomato, mozzarella, basil and balsamic glaze."
+  },
+  {
+    "id": 104,
+    "name": "Greek Salad",
+    "description": "Feta, olives, cucumber, tomato and red onion."
+  },
+  {
+    "id": 105,
+    "name": "Caesar Salad",
+    "description": "Romaine, croutons, Parmesan and Caesar dressing."
+  },
+  {
+    "id": 106,
+    "name": "Spinach Salad",
+    "description": "Baby spinach with goat cheese and walnuts."
+  },
+  {
+    "id": 107,
+    "name": "Beet Salad",
+    "description": "Roasted beets with goat cheese and arugula."
+  },
+  {
+    "id": 108,
+    "name": "Quinoa Salad",
+    "description": "Quinoa with veggies, feta and lemon dressing."
+  },
+  {
+    "id": 109,
+    "name": "Waldorf Salad",
+    "description": "Apple, celery, grapes and walnut in mayo dressing."
+  },
+  {
+    "id": 110,
+    "name": "Chicken Sandwich",
+    "description": "Grilled chicken breast on ciabatta with mayo."
+  },
+  {
+    "id": 111,
+    "name": "Turkey Club Sandwich",
+    "description": "Turkey, bacon, lettuce, tomato and mayo on toast."
+  },
+  {
+    "id": 112,
+    "name": "BLT Sandwich",
+    "description": "Bacon, lettuce, tomato and mayo on toasted bread."
+  },
+  {
+    "id": 113,
+    "name": "Grilled Cheese Sandwich",
+    "description": "Melted cheese between grilled bread slices."
+  },
+  {
+    "id": 114,
+    "name": "Tuna Salad Sandwich",
+    "description": "Tuna mixed with mayo, celery and spices in bread."
+  },
+  {
+    "id": 115,
+    "name": "Egg Salad Sandwich",
+    "description": "Chopped eggs with mayo and mustard served on bread."
+  },
+  {
+    "id": 116,
+    "name": "PB&J Sandwich",
+    "description": "Peanut butter and jelly spread on sliced bread."
+  },
+  {
+    "id": 117,
+    "name": "Veggie Panini",
+    "description": "Grilled vegetable and cheese pressed sandwich."
+  },
+  {
+    "id": 118,
+    "name": "Chicken Panini",
+    "description": "Grilled chicken, mozzarella and pesto pressed sandwich."
+  },
+  {
+    "id": 119,
+    "name": "Steak Panini",
+    "description": "Sliced steak, onions and peppers pressed sandwich."
+  },
+  {
+    "id": 120,
+    "name": "Club Panini",
+    "description": "Turkey, ham, bacon, cheese and veggies pressed sandwich."
+  },
+  {
+    "id": 121,
+    "name": "Falafel Wrap",
+    "description": "Falafel, lettuce, tomato and tahini in tortilla wrap."
+  },
+  {
+    "id": 122,
+    "name": "Chicken Caesar Wrap",
+    "description": "Chicken, romaine, Parmesan and Caesar dressing in wrap."
+  },
+  {
+    "id": 123,
+    "name": "Buffalo Chicken Wrap",
+    "description": "Spicy buffalo chicken, lettuce and ranch in wrap."
+  },
+  {
+    "id": 124,
+    "name": "Steak Wrap",
+    "description": "Sliced steak, onions, peppers and cheese in wrap."
+  },
+  {
+    "id": 125,
+    "name": "Hummus Wrap",
+    "description": "Hummus, cucumber, tomato and sprouts in wrap."
+  },
+  {
+    "id": 126,
+    "name": "Breakfast Burrito",
+    "description": "Scrambled eggs, cheese, sausage and salsa in tortilla."
+  },
+  {
+    "id": 127,
+    "name": "Quesadilla",
+    "description": "Grilled tortilla with melted cheese and optional fillings."
+  },
+  {
+    "id": 128,
+    "name": "Burrito Bowl",
+    "description": "Rice, beans, meat, veggies and toppings in a bowl."
+  },
+  {
+    "id": 129,
+    "name": "Poke Bowl",
+    "description": "Marinated raw fish, rice, veggies and sauce in a bowl."
+  },
+  {
+    "id": 130,
+    "name": "Tomato Soup",
+    "description": "Creamy tomato soup served with basil."
+  },
+  {
+    "id": 131,
+    "name": "Pumpkin Soup",
+    "description": "Roasted pumpkin soup with cream and spices."
+  },
+  {
+    "id": 132,
+    "name": "Chicken Noodle Soup",
+    "description": "Classic soup with chicken, noodles and veggies."
+  },
+  {
+    "id": 133,
+    "name": "Miso Soup",
+    "description": "Japanese broth with tofu, seaweed and scallions."
+  },
+  {
+    "id": 134,
+    "name": "Minestrone",
+    "description": "Italian vegetable soup with pasta and beans."
+  },
+  {
+    "id": 135,
+    "name": "Clam Chowder",
+    "description": "Creamy soup with clams, potatoes and onions."
+  },
+  {
+    "id": 136,
+    "name": "Lentil Soup",
+    "description": "Hearty lentil soup with vegetables and herbs."
+  },
+  {
+    "id": 137,
+    "name": "French Onion Soup",
+    "description": "Onion soup topped with bread and melted cheese."
+  },
+  {
+    "id": 138,
+    "name": "Pho",
+    "description": "Vietnamese noodle soup with beef, herbs and broth."
+  },
+  {
+    "id": 139,
+    "name": "Ramen",
+    "description": "Japanese noodle soup with broth, meat and toppings."
+  },
+  {
+    "id": 140,
+    "name": "Gazpacho",
+    "description": "Cold Spanish tomato and vegetable soup."
   }
 ]
