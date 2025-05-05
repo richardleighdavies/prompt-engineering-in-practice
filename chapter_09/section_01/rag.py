@@ -1,13 +1,16 @@
 import os
 import json
 
+from dotenv import load_dotenv     
+load_dotenv()
+
 from langchain.schema import Document
 from langchain.text_splitter import RecursiveCharacterTextSplitter
-from langchain.embeddings.openai import OpenAIEmbeddings
-from langchain.vectorstores import InMemoryVectorStore
-from langchain.chat_models import ChatOpenAI
+from langchain_openai import OpenAIEmbeddings, ChatOpenAI
+from langchain_core.vectorstores import InMemoryVectorStore
 from langchain.prompts import PromptTemplate
-from langchain import LLMChain
+from langchain.chains import LLMChain
+
 
 # ─── STEP 1: LOAD ──────────────────────────────────────────────────────────────
 def load_menu_as_docs(path: str) -> list[Document]:
@@ -30,7 +33,10 @@ def split_documents(
     • Breaks each Document into smaller chunks
     • Uses recursive splitting to respect sentence/paragraph boundaries
     """
-    splitter = RecursiveCharacterTextSplitter(chunk_size=chunk_size, chunk_overlap=overlap)
+    splitter = RecursiveCharacterTextSplitter(
+        chunk_size=chunk_size,
+        chunk_overlap=overlap
+    )
     return splitter.split_documents(docs)
 
 
@@ -101,7 +107,7 @@ Answer:
 def main():
     # 0) VERIFY OPENAI KEY
     if not os.getenv("OPENAI_API_KEY"):
-        raise RuntimeError("Please set the OPENAI_API_KEY environment variable")
+        raise RuntimeError("Please set OPENAI_API_KEY in your .env")
 
     # 1) LOAD
     docs = load_menu_as_docs("data/menu.json")
