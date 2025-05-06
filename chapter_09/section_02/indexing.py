@@ -1,3 +1,4 @@
+
 import os
 from glob import glob
 from dotenv import load_dotenv
@@ -9,21 +10,21 @@ from langchain.vectorstores import FAISS
 
 def load_pdfs(pdf_folder: str):
     """
-    LOAD: Carrega cada PDF em pdf_folder via UnstructuredPDFLoader.load()
+    LOAD: Load each PDF in pdf_folder using UnstructuredPDFLoader.load()
     """
     pdf_paths = glob(os.path.join(pdf_folder, "*.pdf"))
     all_docs = []
     for path in pdf_paths:
         loader = UnstructuredPDFLoader(path)
-        docs = loader.load()  # retorna lista de Document
+        docs = loader.load()  # returns a list of Document objects
         print(f"✅ Loaded {len(docs)} docs from {os.path.basename(path)}")
         all_docs.extend(docs)
     return all_docs
 
-def split_documents(docs, chunk_size: int = 1000, overlap: int = 200):
+def split_documents(docs, chunk_size: int = 2500, overlap: int = 250):
     """
-    SPLIT: divide os Documents em pedaços de até chunk_size tokens,
-    com overlap, para melhorar a recuperação.
+    SPLIT: Break Documents into chunks of up to chunk_size tokens,
+    with overlap to improve retrieval accuracy.
     """
     splitter = RecursiveCharacterTextSplitter(
         chunk_size=chunk_size,
@@ -35,7 +36,7 @@ def split_documents(docs, chunk_size: int = 1000, overlap: int = 200):
 
 def build_and_save_faiss(chunks, index_dir: str = "faiss_index"):
     """
-    EMBED + STORE: gera embeddings e salva o índice FAISS em disco.
+    EMBED + STORE: Generate embeddings and save the FAISS index to disk.
     """
     embedder = OpenAIEmbeddings(model="text-embedding-ada-002")
     faiss_index = FAISS.from_documents(chunks, embedder)
@@ -43,11 +44,11 @@ def build_and_save_faiss(chunks, index_dir: str = "faiss_index"):
     print(f"💾 FAISS index written to ./{index_dir}/")
 
 if __name__ == "__main__":
-    load_dotenv()  # carrega OPENAI_API_KEY do .env
+    load_dotenv()  # load OPENAI_API_KEY from .env
 
-    # Como estamos fora da pasta selected_paper, ajustamos o caminho:
+    # Since we're running from the project root, point to the PDF folder:
     PDF_FOLDER = os.path.join("selected_paper")
-    INDEX_DIR  = os.path.join("selected_paper", "faiss_index")
+    INDEX_DIR  = os.path.join("faiss_index")
 
     docs   = load_pdfs(PDF_FOLDER)
     chunks = split_documents(docs)
