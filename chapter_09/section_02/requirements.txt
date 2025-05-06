@@ -1,6 +1,12 @@
+# .env loading
 python-dotenv>=0.21.0
+
+# LangChain core + community extensions
 langchain>=0.0.331
 langchain-community>=0.0.10
+
+# Embeddings client as of v0.2
+langchain-openai>=0.0.5
 
 # PDF parsing with dependencies
 unstructured[pdf]>=0.10.0
