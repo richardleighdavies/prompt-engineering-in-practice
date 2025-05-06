@@ -1,0 +1,15 @@
+python-dotenv>=0.21.0
+langchain>=0.0.331
+langchain-community>=0.0.10
+
+# PDF parsing with dependencies
+unstructured[pdf]>=0.10.0
+pypdf>=3.6.0
+pdfminer.six>=20221105
+
+# OpenAI client + tokenizer
+openai>=0.27.0
+tiktoken>=0.4.0
+
+# FAISS for vector storage
+faiss-cpu>=1.7.3
