@@ -23,29 +23,47 @@ def load_chroma():
 def retrieve_documents(vectorstore, query: str, k: int = 5):
     """
     RETRIEVE: Fetch the top-k most relevant document chunks for the given query.
-    Print content and metadata for inspection.
+    Also include the first chunk from the vectorstore to ensure key metadata is available.
     """
     retriever = vectorstore.as_retriever(search_kwargs={"k": k})
-    docs = retriever.invoke(query)
-    print(f"Retrieved {len(docs)} chunks for query: {query!r}\n")
+    top_docs = retriever.invoke(query)
 
-    for i, doc in enumerate(docs, 1):
+    for i, doc in enumerate(top_docs, 1):
         print(f"Chunk {i}:")
         print("Content:")
-        print(doc.page_content[:500])  # print first 500 characters to avoid overload
+        print(doc.page_content[:500])
         print("\nMetadata:")
         for key, value in doc.metadata.items():
             print(f"- {key}: {value}")
         print("\n" + "=" * 80 + "\n")
 
-    return docs
+    return top_docs
 
 def generate_answer(docs, question: str, temperature: float = 0.0):
     """
     GENERATE: Use a prompt template and a language model to answer a question based on the retrieved documents.
-    Include metadata to provide additional context to the answer.
+    Include metadata in the context to improve answer quality.
     """
-    context = "\n\n".join(doc.page_content for doc in docs)
+    context_chunks = []
+    for doc in docs:
+        metadata_str = ""
+        title = doc.metadata.get("title")
+        page = doc.metadata.get("page")
+        file = doc.metadata.get("source_file")
+        authors = doc.metadata.get("authors")
+
+        if title:
+            metadata_str += f"Title: {title}\n"
+        if authors:
+            metadata_str += f"Authors: {authors}\n"
+        if page is not None:
+            metadata_str += f"Page: {page}\n"
+        if file:
+            metadata_str += f"File: {file}\n"
+
+        context_chunks.append(f"{metadata_str.strip()}\nContent:\n{doc.page_content.strip()}")
+
+    context = "\n\n".join(context_chunks)
 
     template = """
 You are a science co-pilot. Use ONLY the context below to answer the question.

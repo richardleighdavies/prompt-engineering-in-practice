@@ -25,15 +25,24 @@ def load_pdfs(pdf_folder: str):
 
             # Optional heuristic to infer the title from the first line
             if "title" not in doc.metadata or not doc.metadata["title"]:
-                first_line = doc.page_content.strip().split("\n")[0]
-                if 10 < len(first_line) < 120:
-                    doc.metadata["title"] = first_line
+                lines = [line.strip() for line in doc.page_content.split("\n") if line.strip()]
+                candidate_lines = [
+                    line for line in lines[:5]
+                    if 15 < len(line) < 120 and not any(char.isdigit() for char in line[:10])
+                ]
+
+                if candidate_lines:
+                    doc.metadata["title"] = candidate_lines[0]
+                else:
+                    # Fallback: filename without extension
+                    filename = os.path.basename(path)
+                    doc.metadata["title"] = os.path.splitext(filename)[0]
 
         print(f"Loaded {len(docs)} documents from {os.path.basename(path)}")
         all_docs.extend(docs)
     return all_docs
 
-def split_documents(docs, chunk_size: int = 2500, overlap: int = 250):
+def split_documents(docs, chunk_size: int = 2000, overlap: int = 500):
     """
     SPLIT: Break the documents into smaller chunks to prepare them for vectorization.
     Metadata from each document is preserved in each chunk.
@@ -42,8 +51,19 @@ def split_documents(docs, chunk_size: int = 2500, overlap: int = 250):
         chunk_size=chunk_size,
         chunk_overlap=overlap
     )
+
     chunks = splitter.split_documents(docs)
-    print(f"Split into {len(chunks)} chunks")
+    print(f"Split into {len(chunks)} chunks\n")
+
+    for i, chunk in enumerate(chunks, 1):
+        print(f"=== Chunk {i} ===")
+        print("Content preview:")
+        print(chunk.page_content[:500])  # Limit output for readability
+        print("\nMetadata:")
+        for key, value in chunk.metadata.items():
+            print(f"- {key}: {value}")
+        print("\n" + "=" * 80 + "\n")
+
     return chunks
 
 def build_and_save_chroma(chunks):
