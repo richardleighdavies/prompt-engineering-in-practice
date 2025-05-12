@@ -6,6 +6,7 @@ from langchain.vectorstores import Chroma
 from langchain_community.chat_models import ChatOpenAI
 from langchain.prompts import PromptTemplate
 
+
 def load_chroma():
     """
     RETRIEVE: Load the Chroma vector database from disk using the specified embedding model.
@@ -20,10 +21,10 @@ def load_chroma():
     print(f"Loaded Chroma vector database from: {persist_dir}")
     return db_client
 
+
 def retrieve_documents(vectorstore, query: str, k: int = 5):
     """
     RETRIEVE: Fetch the top-k most relevant document chunks for the given query.
-    Also include the first chunk from the vectorstore to ensure key metadata is available.
     """
     retriever = vectorstore.as_retriever(search_kwargs={"k": k})
     top_docs = retriever.invoke(query)
@@ -39,35 +40,44 @@ def retrieve_documents(vectorstore, query: str, k: int = 5):
 
     return top_docs
 
-def generate_answer(docs, question: str, temperature: float = 0.0):
+
+def format_metadata(doc):
     """
-    GENERATE: Use a prompt template and a language model to answer a question based on the retrieved documents.
-    Include metadata in the context to improve answer quality.
+    Format metadata from a single Document object as readable text.
+    """
+    lines = []
+    meta = doc.metadata
+    if meta.get("title"):
+        lines.append(f"Title: {meta['title']}")
+    if meta.get("authors"):
+        lines.append(f"Authors: {meta['authors']}")
+    if meta.get("page") is not None:
+        lines.append(f"Page: {meta['page']}")
+    if meta.get("source_file"):
+        lines.append(f"File: {meta['source_file']}")
+    return "\n".join(lines)
+
+
+def build_context(docs):
+    """
+    Build the context string with metadata + chunk content to send to the LLM.
     """
     context_chunks = []
     for doc in docs:
-        metadata_str = ""
-        title = doc.metadata.get("title")
-        page = doc.metadata.get("page")
-        file = doc.metadata.get("source_file")
-        authors = doc.metadata.get("authors")
+        metadata = format_metadata(doc)
+        content = doc.page_content.strip()
+        block = f"{metadata}\nContent:\n{content}"
+        context_chunks.append(block)
+    return "\n\n".join(context_chunks)
 
-        if title:
-            metadata_str += f"Title: {title}\n"
-        if authors:
-            metadata_str += f"Authors: {authors}\n"
-        if page is not None:
-            metadata_str += f"Page: {page}\n"
-        if file:
-            metadata_str += f"File: {file}\n"
 
-        context_chunks.append(f"{metadata_str.strip()}\nContent:\n{doc.page_content.strip()}")
-
-    context = "\n\n".join(context_chunks)
-
+def build_prompt_template():
+    """
+    Define the instruction that guides the LLM's behavior.
+    """
     template = """
-You are a science co-pilot. Use ONLY the context below to answer the question.
-If the answer is not contained in the context, respond "I don't know."
+Answer the user's question using ONLY the context below.
+If the answer is not in the context, respond with "I don't know."
 
 Context:
 {context}
@@ -75,42 +85,32 @@ Context:
 Question:
 {question}
 
-Answer:"""
+Answer:
+"""
+    return PromptTemplate.from_template(template)
 
-    prompt = PromptTemplate.from_template(template)
+
+def call_llm(prompt, context, question, temperature=0.0):
+    """
+    Send the prompt, context, and question to the language model and return the result.
+    """
     llm = ChatOpenAI(model_name="gpt-4", temperature=temperature)
-
     pipeline = prompt | llm
-    generation = pipeline.invoke({"context": context, "question": question})
+    response = pipeline.invoke({"context": context, "question": question})
 
-    if isinstance(generation, list):
-        generation = generation[0]
+    if isinstance(response, list):
+        response = response[0]
+    return response.content.strip()
 
-    answer_text = generation.content.strip()
 
-    # Extract metadata context
-    sources = set()
-    for doc in docs:
-        title = doc.metadata.get("title")
-        source_file = doc.metadata.get("source_file")
+def generate_answer(docs, question: str, temperature: float = 0.0):
+    """
+    Orchestrates the steps to generate an answer: context building, prompt formatting, and LLM call.
+    """
+    context = build_context(docs)
+    prompt = build_prompt_template()
+    return call_llm(prompt, context, question, temperature)
 
-        if title and source_file:
-            source_entry = f"{title} (file: {source_file})"
-        elif title:
-            source_entry = title
-        elif source_file:
-            source_entry = f"File: {source_file}"
-        else:
-            continue
-
-        sources.add(source_entry)
-
-    if sources:
-        source_note = "\n\nContextual sources:\n" + "\n".join(f"• {s}" for s in sorted(sources))
-    else:
-        source_note = ""
-
-    return answer_text + source_note
 
 if __name__ == "__main__":
     load_dotenv()
