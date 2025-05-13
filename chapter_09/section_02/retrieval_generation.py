@@ -7,7 +7,7 @@ from langchain_community.chat_models import ChatOpenAI
 from langchain.prompts import PromptTemplate
 
 
-def load_chroma():
+def load_vector_store():
     """
     RETRIEVE: Load the Chroma vector database from disk using the specified embedding model.
     """
@@ -103,25 +103,25 @@ def call_llm(prompt, context, question, temperature=0.0):
     return response.content.strip()
 
 
-def generate_answer(docs, question: str, temperature: float = 0.0):
+def generate_answer(context, question: str, temperature: float = 0.0):
     """
     Orchestrates the steps to generate an answer: context building, prompt formatting, and LLM call.
     """
-    context = build_context(docs)
+    context = build_context(context)
     prompt = build_prompt_template()
     return call_llm(prompt, context, question, temperature)
 
 
 if __name__ == "__main__":
     load_dotenv()
-    chroma_db = load_chroma()
+    vectore_store = load_vector_store()
 
     while True:
         query = input("\nEnter your question (or type 'exit' to quit):\n> ")
         if query.lower() in ("exit", "quit"):
             break
 
-        docs = retrieve_documents(chroma_db, query, k=5)
-        answer = generate_answer(docs, query)
+        context = retrieve_documents(vectore_store, query, k=5)
+        answer = generate_answer(context, query)
 
         print("\nAnswer:\n", answer)

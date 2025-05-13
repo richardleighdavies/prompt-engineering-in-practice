@@ -46,7 +46,7 @@ def load_pdfs(pdf_folder: str):
     return all_docs
 
 
-def split_documents(docs, chunk_size: int = 2000, overlap: int = 500, debug: bool = True):
+def split_documents(docs, chunk_size: int = 1000, overlap: int = 250, debug: bool = True):
     """
     SPLIT: Break documents into semantic chunks.
     Metadata is preserved for use in RAG or metadata-aware prompts.
