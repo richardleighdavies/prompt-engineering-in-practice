@@ -46,7 +46,7 @@ def load_pdfs(pdf_folder: str):
     return all_docs
 
 
-def split_documents(docs, chunk_size: int = 1000, overlap: int = 250, debug: bool = True):
+def split_documents(docs, chunk_size: int = 1000, overlap: int = 250):
     """
     SPLIT: Break documents into semantic chunks.
     Metadata is preserved for use in RAG or metadata-aware prompts.
@@ -58,15 +58,15 @@ def split_documents(docs, chunk_size: int = 1000, overlap: int = 250, debug: boo
     chunks = splitter.split_documents(docs)
     print(f"Split into {len(chunks)} chunks\n")
 
-    if debug:
-        for i, chunk in enumerate(chunks, 1):
-            print(f"=== Chunk {i} ===")
-            print("Content preview:")
-            print(chunk.page_content[:500])
-            print("\nMetadata:")
-            for key, value in chunk.metadata.items():
-                print(f"- {key}: {value}")
-            print("\n" + "=" * 80 + "\n")
+   
+    for i, chunk in enumerate(chunks, 1):
+        print(f"=== Chunk {i} ===")
+        print("Content preview:")
+        print(chunk.page_content[:500])
+        print("\nMetadata:")
+        for key, value in chunk.metadata.items():
+            print(f"- {key}: {value}")
+        print("\n" + "=" * 80 + "\n")
 
     return chunks
 
@@ -95,7 +95,7 @@ if __name__ == "__main__":
     docs = load_pdfs(pdf_folder)
 
     print("Splitting documents into chunks...")
-    chunks = split_documents(docs, debug=True)
+    chunks = split_documents(docs)
 
     print("Building and saving vector index...")
     build_and_save_chroma(chunks)
