@@ -1,62 +1,67 @@
 import os
-from deepeval.metrics import GEval
+import json
 from deepeval.test_case import LLMTestCase, LLMTestCaseParams
+from deepeval.metrics import GEval
 from deepeval import evaluate
-from app import MeetingSummarizer 
+from bug_triage import BugTriageAssistant
 
-DOCUMENTS_PATH = "path/to/documents/folder" 
-THRESHOLD = 0.9
+# python test.py
 
-summary_concision = GEval(
-    name="Summary Concision",
-    criteria=(
-        "Assess whether the summary is concise and focused only on the essential points of the meeting. "
-        "It should avoid repetition, irrelevant details, and unnecessary elaboration."
-    ),
-    threshold=THRESHOLD,
-    evaluation_params=[LLMTestCaseParams.INPUT, LLMTestCaseParams.ACTUAL_OUTPUT],
+# Initialize the BugTriageAssistant
+triager = BugTriageAssistant()
+
+# Sample bug reports for testing
+bug_reports = [
+    {
+        "input": "The application crashes when clicking the 'Save' button after entering data.",
+        "expected_summary_criteria": "Is the summary concise and focused on the core issue?",
+        "expected_triage_criteria": "Does the triage data accurately reflect the bug's priority, component, issue type, and suggested next step?"
+    },
+    {
+        "input": "Users report a delay in loading the dashboard after login.",
+        "expected_summary_criteria": "Is the summary concise and focused on the core issue?",
+        "expected_triage_criteria": "Does the triage data accurately reflect the bug's priority, component, issue type, and suggested next step?"
+    }
+]
+
+# Define metrics
+summary_metric = GEval(
+    name="Summary Conciseness",
+    criteria="Assess whether the summary is concise and focused only on the essential points of the bug report.",
+    threshold=0.9,
+    evaluation_params=[LLMTestCaseParams.INPUT, LLMTestCaseParams.ACTUAL_OUTPUT]
 )
 
-action_item_check = GEval(
-    name="Action Item Accuracy",
-    criteria=(
-        "Are the action items accurate, complete, and clearly reflect the key tasks or follow-ups mentioned in the meeting?"
-    ),
-    threshold=THRESHOLD,
-    evaluation_params=[LLMTestCaseParams.INPUT, LLMTestCaseParams.ACTUAL_OUTPUT],
+triage_metric = GEval(
+    name="Triage Data Accuracy",
+    criteria="Assess whether the triage data accurately reflects the bug's priority, component, issue type, and suggested next step.",
+    threshold=0.9,
+     evaluation_params=[LLMTestCaseParams.INPUT, LLMTestCaseParams.ACTUAL_OUTPUT]
 )
 
-transcripts = []
-for filename in os.listdir(DOCUMENTS_PATH):
-    if filename.endswith(".txt"):
-        with open(os.path.join(DOCUMENTS_PATH, filename), "r", encoding="utf-8") as file:
-            transcripts.append(file.read().strip())
-
-summarizer = MeetingSummarizer()
-
+# Create test cases
 summary_test_cases = []
-action_item_test_cases = []
+triage_test_cases = []
 
-for transcript in transcripts:
-    summary, action_items = summarizer.summarize(transcript)
+for report in bug_reports:
+    summary = triager.summarize_bug(report["input"])
+    triage_data = triager.classify_bug(report["input"])
 
-    summary_test_cases.append(
-        LLMTestCase(
-            input=transcript,
-            actual_output=summary
-        )
+    summary_test_case = LLMTestCase(
+        input=report["input"],
+        actual_output=summary
+    )
+    triage_test_case = LLMTestCase(
+        input=report["input"],
+        actual_output=json.dumps(triage_data)
     )
 
-    action_item_test_cases.append(
-        LLMTestCase(
-            input=transcript,
-            actual_output=str(action_items)
-        )
-    )
+    summary_test_cases.append(summary_test_case)
+    triage_test_cases.append(triage_test_case)
 
+# Run evaluations
+print("Evaluating summaries...")
+evaluate(test_cases=summary_test_cases, metrics=[summary_metric])
 
-print("Running evaluation for summaries...")
-evaluate(test_cases=summary_test_cases, metrics=[summary_concision])
-
-print("\nRunning evaluation for action items...")
-evaluate(test_cases=action_item_test_cases, metrics=[action_item_check])
+print("\nEvaluating triage data...")
+evaluate(test_cases=triage_test_cases, metrics=[triage_metric])

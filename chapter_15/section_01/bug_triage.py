@@ -6,6 +6,8 @@ from typing import Any
 
 load_dotenv()
 
+# python bug_triage.py
+
 class BugTriageAssistant:
     def __init__(
         self, 
