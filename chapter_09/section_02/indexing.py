@@ -91,7 +91,7 @@ if __name__ == "__main__":
     load_dotenv()
 
     print("Loading PDF documents...")
-    pdf_folder = os.path.join("selected_paper")
+    pdf_folder = os.path.join("paper")
     docs = load_pdfs(pdf_folder)
 
     print("Splitting documents into chunks...")
