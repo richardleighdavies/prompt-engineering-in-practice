@@ -77,8 +77,15 @@ class BugTriageAssistant:
 if __name__ == "__main__":
     triager = BugTriageAssistant()
 
-    with open("bug_report.txt", "r") as file:
-        bug_report = file.read().strip()
+    current_dir = os.path.dirname(__file__)
+    bug_report_path = os.path.join(current_dir, "bug_reports", "bug_report.txt")
+    
+    if not os.path.exists(bug_report_path):
+        print(f"Erro: O arquivo {bug_report_path} não foi encontrado.")
+        exit(1)
+
+    with open(bug_report_path, "r") as file:
+        bug_report = file.read().strip()    
 
     summary, triage_info = triager.triage(bug_report)
     print("Summary:")
