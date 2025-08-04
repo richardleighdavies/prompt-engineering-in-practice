@@ -102,33 +102,44 @@ Answer:
 
     return generation.content
 
-def main():   
-    if not os.getenv("OPENAI_API_KEY"):
-        raise RuntimeError("Please set OPENAI_API_KEY in your .env file")   
-    items = load_menu_items("data/menu.json")   
-    splits = split_documents(items, chunk_size=500, overlap=50)    
-    vectorstore = build_vectorstore(splits, embedding_model="text-embedding-ada-002")  
-    llm = ChatOpenAI(model_name="gpt-3.5-turbo", temperature=0.0)   
-    example_questions = [
+class RAGAgent:
+    def __init__(self, document_path: str):
+        items = load_menu_items(document_path)
+        splits = split_documents(items)
+        self.vectorstore = build_vectorstore(splits)
+        self.llm = ChatOpenAI(model_name="gpt-3.5-turbo", temperature=0.0)
+        if not os.getenv("OPENAI_API_KEY"):
+            raise RuntimeError("Please set OPENAI_API_KEY in your .env file") 
+
+    def retrieve(self, query: str):
+        return retrieve_documents(self.vectorstore, query)
+
+    def generate(self, query: str, context_chunks):
+        return generate_answer(self.llm, context_chunks, query)
+
+def main():    
+    agent = RAGAgent("data/menu.json")
+
+    queries = [
         "What dairy-free drinks do you offer?",
         "Tell me the ingredients of your Mocha.",
         "Which drinks contain chocolate?"
     ]
 
-    for question in example_questions:
+    for query in queries:
         print("\n" + "=" * 60)
-        print(f"Question: {question}\n")
+        print(f"Query: {query}\n")
       
-        top_chunks = retrieve_documents(vectorstore, question, k=3)
+        top_chunks = agent.retrieve(query)
+
         print("Retrieved chunks:")
         for chunk in top_chunks:
             print(" -", chunk.page_content)
         
-        answer = generate_answer(llm, top_chunks, question)
+        answer = agent.generate(query, top_chunks)
         print("\nAnswer:")
         print(answer)
         print("=" * 60)
-
 
 if __name__ == "__main__":
     main()
