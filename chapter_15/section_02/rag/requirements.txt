@@ -1,0 +1,6 @@
+openai
+python-dotenv
+langchain>=0.0.331
+langchain-openai
+langchain-core
+numpy
