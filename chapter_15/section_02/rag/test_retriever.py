@@ -36,3 +36,5 @@ for golden in goldens:
     retriever_test_cases.append(test_case)
 
 evaluate(retriever_test_cases, metrics)
+
+# deepeval test run test_retriever.py
